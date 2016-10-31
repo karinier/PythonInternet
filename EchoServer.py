@@ -24,13 +24,16 @@ def handle_request(request):
     words = head.split()
     if words[0].decode("utf-8") == 'GET':
         print("We have a GET request!")
+        print(bytes(OK,"utf-8"))
         return bytes(OK, "utf-8")
     elif words[0].decode("utf-8") == 'HEAD':
         print("We have a HEAD request!")
+        print(bytes(OK, "utf-8"))
         return bytes(OK, "utf-8")
 
     elif words[0].decode("utf-8") == 'PUT':
         print("We have a  PUT request!")
+        print(bytes(OK, "utf-8"))
     else:
         return bytes(METHOD_NOT_ALLOWED, "utf-8")
 
@@ -48,7 +51,7 @@ def client_talk(client_sock, client_addr):
         # and everything basically.
         # a good way to do this is to make a function here, and pass
         # the data to it so that you can keep the logic separate.
-        handle_request(data)
+        response= handle_request(data)
         data = client_sock.recv(BUFSIZE)
 
     # if the client (the remote side) disconnects then it falls to here
