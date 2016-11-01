@@ -16,7 +16,8 @@ def handle_request(request):
     # here the request can be handled
     # right now it just takes the bytes that are received and
     # decodes them as utf-8 bytes and prints it out
-
+    from subprocess import Popen
+   
     print(request.decode('utf-8'))
     lines = request.splitlines()
     head = lines[0]
@@ -24,11 +25,13 @@ def handle_request(request):
     words = head.split()
     if words[0].decode("utf-8") == 'GET':
         print("We have a GET request!")
-        print(bytes(OK,"utf-8"))
+        pathvar=words[1].decode("utf-8")
+        Popen(["firefox", pathvar])
+        print(words[1].decode("utf-8"))
         return bytes(OK, "utf-8")
     elif words[0].decode("utf-8") == 'HEAD':
         print("We have a HEAD request!")
-        print(bytes(OK, "utf-8"))
+        
         return bytes(OK, "utf-8")
 
     elif words[0].decode("utf-8") == 'PUT':
@@ -51,6 +54,7 @@ def client_talk(client_sock, client_addr):
         # and everything basically.
         # a good way to do this is to make a function here, and pass
         # the data to it so that you can keep the logic separate.
+        print(data, "in while loop")
         response= handle_request(data)
         data = client_sock.recv(BUFSIZE)
 
